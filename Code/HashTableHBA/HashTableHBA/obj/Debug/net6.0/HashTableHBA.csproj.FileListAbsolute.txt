@@ -1,0 +1,15 @@
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\HashTableHBA.exe
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\HashTableHBA.deps.json
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\HashTableHBA.runtimeconfig.json
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\HashTableHBA.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\HashTableHBA.pdb
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.csproj.AssemblyReference.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.GeneratedMSBuildEditorConfig.editorconfig
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.AssemblyInfoInputs.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.AssemblyInfo.cs
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.csproj.CoreCompileInputs.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\refint\HashTableHBA.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.pdb
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.genruntimeconfig.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\ref\HashTableHBA.dll
