@@ -13,3 +13,7 @@ D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\r
 D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.pdb
 D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.genruntimeconfig.cache
 D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\ref\HashTableHBA.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\System.Data.HashFunction.Core.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\System.Data.HashFunction.Interfaces.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\bin\Debug\net6.0\System.Data.HashFunction.Jenkins.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\HashTableHBA\obj\Debug\net6.0\HashTableHBA.csproj.CopyComplete

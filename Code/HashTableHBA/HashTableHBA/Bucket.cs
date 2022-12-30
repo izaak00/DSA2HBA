@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace HashTableHBA
 {
-    internal class Bucket<Key,Value>
+    public class Bucket<Key,Value>
     {
         //Key key;
         public Key key { get; set; }
@@ -16,10 +16,10 @@ namespace HashTableHBA
         public Bucket<Key, Value> nextBucket { get; set; }
         
 
-        public Bucket(Key Key, Value Value)
+        public Bucket(Key _key, Value _value)
         {
-            key = Key;
-            value = Value;
+            key = _key;
+            value = _value;
         }
        
     }

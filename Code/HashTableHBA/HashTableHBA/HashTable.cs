@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +11,7 @@ namespace HashTableHBA
 {
     public class HashTable<Key, Value> : IHashTable<Key, Value>
     {
-        private LinkedList<Bucket<Key, Value>>[] buckets;
+        private LinkedList<Bucket<Key, Value>>[] KeyValuePair;
         private int count;
 
         public int Capacity { get; set; }
@@ -17,7 +19,7 @@ namespace HashTableHBA
         public HashTable(int capacity)
         {
             Capacity = capacity;
-            buckets = new LinkedList<Bucket<Key, Value>>[capacity];
+            KeyValuePair = new LinkedList<Bucket<Key, Value>>[capacity];
             count = 0;
         }
         public int Count()
@@ -28,7 +30,7 @@ namespace HashTableHBA
         public bool Delete(Key key)
         {
             int bucketIndex = HashFunction.Hash(key, Capacity);
-            LinkedList<Bucket<Key, Value>> bucket = buckets[bucketIndex];
+            LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
             if (bucket != null)
             {
                 foreach (Bucket<Key, Value> pair in bucket)
@@ -53,32 +55,30 @@ namespace HashTableHBA
         {
             if(GetLoadFactor() >= 0.9)
             {
-                Console.WriteLine("Rehash!");
+                rehash();
             }
 
             // Do a check
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
-            
-            LinkedList <Bucket<Key, Value >> bucket = buckets[bucketIndex];
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            uint bucketIndex = JenkinsHashFunction.JenkinsHashWithGetHashCode(key, Capacity);
+
+            LinkedList <Bucket<Key, Value >> bucket = KeyValuePair[bucketIndex];
 
             if (bucket == null)
             {
                 bucket = new LinkedList<Bucket<Key, Value>>();
-                buckets[bucketIndex] = bucket;
+                KeyValuePair[bucketIndex] = bucket;
             }
+           
             else
-            {
-                foreach(Bucket<Key, Value> pair in bucket)
-                {
-                    if (pair.key.Equals(key))
-                    {         
-                        return false;
-                    }
-                }           
+            { 
+                return false;
             }
+                     
+            
             bucket.AddLast(new Bucket<Key, Value>(key, value));
             count++;
             return true;
@@ -87,7 +87,7 @@ namespace HashTableHBA
         public Value Search(Key key)
         {
             int bucketIndex = HashFunction.Hash(key, Capacity);
-            LinkedList<Bucket<Key, Value>> bucket = buckets[bucketIndex];
+            LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
             if(bucket != null)
             {
                 foreach (Bucket<Key, Value> pair in bucket)
@@ -103,8 +103,13 @@ namespace HashTableHBA
 
         public bool Update(Key key, Value newValue)
         {
+            if(key == null)
+            {
+                return false;
+            }
+
             int bucketIndex = HashFunction.Hash(key, Capacity);
-            LinkedList<Bucket<Key, Value>> bucket = buckets[bucketIndex];
+            LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
 
             if(bucket != null)
             {
@@ -118,6 +123,22 @@ namespace HashTableHBA
                 }
             }
             return false;
+        }
+
+        public bool rehash()
+        {
+
+            // New list with double the size of the original
+            Capacity *=  2;
+
+            var newList = new LinkedList<Bucket<Key, Value>>[Capacity];
+
+            KeyValuePair.CopyTo(newList, 0);
+            KeyValuePair = newList;
+
+            return true;
+
+         
         }
 
     }

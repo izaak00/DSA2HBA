@@ -4,6 +4,7 @@ using HashTableHBA;
 
 var hashTable = new HashTable<int, string>(16);
 
+
 hashTable.Insert(125, "Turbo");
 hashTable.Insert(22, "Injectors");
 hashTable.Insert(326, "Pistons");
@@ -20,6 +21,19 @@ hashTable.Insert(5, "Pistons");
 hashTable.Insert(6, "Connecting Rods");
 hashTable.Insert(7, "Pump");
 hashTable.Insert(8, "Pump");
+hashTable.Insert(9, "Pump");
+hashTable.Insert(10, "Turbo");
+hashTable.Insert(11, "Injectors");
+hashTable.Insert(12, "Pistons");
+hashTable.Insert(13, "Connecting Rods");
+hashTable.Insert(14, "Pump");
+hashTable.Insert(15, "Pump");
+hashTable.Insert(44, "Pump");
+hashTable.Insert(55, "Pump");
+hashTable.Insert(0, "Pump");
+hashTable.Insert(155, "Pump");
+hashTable.Insert(255, "Pump");
+hashTable.Insert(355, "Pump");
 
 string part1 = hashTable.Search(1);
 string part2 = hashTable.Search(44);
