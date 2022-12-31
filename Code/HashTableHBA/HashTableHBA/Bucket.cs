@@ -9,7 +9,6 @@ namespace HashTableHBA
 {
     public class Bucket<Key,Value>
     {
-        //Key key;
         public Key key { get; set; }
         public Value value { get; set; }
 

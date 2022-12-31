@@ -13,12 +13,14 @@ namespace HashTableHBA
     {
         private LinkedList<Bucket<Key, Value>>[] KeyValuePair;
         private int count;
-
         public int Capacity { get; set; }
-
-        public HashTable(int capacity)
+        public IHashFunctionProvider HashFunctionPovider;
+        public IHashFunction HashFunction;
+        public HashTable(int capacity, IHashFunctionProvider provider)
         {
             Capacity = capacity;
+            HashFunctionPovider = provider;
+            HashFunction = HashFunctionPovider.GetHashFunction(Capacity);
             KeyValuePair = new LinkedList<Bucket<Key, Value>>[capacity];
             count = 0;
         }
@@ -29,7 +31,8 @@ namespace HashTableHBA
 
         public bool Delete(Key key)
         {
-            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
             LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
             if (bucket != null)
             {
@@ -51,6 +54,11 @@ namespace HashTableHBA
            return (double)count / Capacity;
         }
 
+        public int CarterHashFunction(Key key)
+        {    
+            return HashFunction.Hash(key);      
+        }
+
         public bool Insert(Key key, Value value)
         {
             if(GetLoadFactor() >= 0.9)
@@ -63,8 +71,9 @@ namespace HashTableHBA
                 throw new ArgumentNullException("key");
 
             //int bucketIndex = HashFunction.Hash(key, Capacity);
-            uint bucketIndex = JenkinsHashFunction.JenkinsHashWithGetHashCode(key, Capacity);
 
+            int bucketIndex = CarterHashFunction(key);
+            
             LinkedList <Bucket<Key, Value >> bucket = KeyValuePair[bucketIndex];
 
             if (bucket == null)
@@ -86,7 +95,9 @@ namespace HashTableHBA
 
         public Value Search(Key key)
         {
-            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
+
             LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
             if(bucket != null)
             {
@@ -108,7 +119,8 @@ namespace HashTableHBA
                 return false;
             }
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
             LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
 
             if(bucket != null)
@@ -127,18 +139,16 @@ namespace HashTableHBA
 
         public bool rehash()
         {
-
             // New list with double the size of the original
             Capacity *=  2;
 
             var newList = new LinkedList<Bucket<Key, Value>>[Capacity];
-
+           
             KeyValuePair.CopyTo(newList, 0);
+
             KeyValuePair = newList;
 
-            return true;
-
-         
+            return true;        
         }
 
     }
