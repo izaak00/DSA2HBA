@@ -18,14 +18,14 @@ namespace HashTableHBA
 
         //Carter Wegman Hash Function
         public IHashFunctionProvider HashFunctionPovider;
-        public IHashFunction HashFunction;
+        public IHashFunction CWHashFunction;
 
         //Constructor
         public HashTable(int capacity, IHashFunctionProvider provider)
         {
             Capacity = capacity;
             HashFunctionPovider = provider;
-            HashFunction = HashFunctionPovider.GetHashFunction(Capacity);
+            CWHashFunction = HashFunctionPovider.GetHashFunction(Capacity);
             KeyValuePair = new Bucket<Key, Value>[capacity];
             count = 0;
         }
@@ -66,23 +66,23 @@ namespace HashTableHBA
 
         public int CarterHashFunction(Key key)
         {    
-            return HashFunction.Hash(key);      
+            return CWHashFunction.Hash(key);      
         }
 
         public bool Insert(Key key, Value value)
         {
-            //if(GetLoadFactor() >= 0.9)
-            //{
-            //    rehash();
-            //}
+            if (GetLoadFactor() >= 0.9)
+            {
+                rehash();
+            }
 
             // Do a check
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = HashFunction.Hash(key, Capacity);
 
-            int bucketIndex = CarterHashFunction(key);
+            //int bucketIndex = CarterHashFunction(key);
             
             Bucket<Key, Value > bucket = new Bucket<Key, Value>(key,value);
 
@@ -142,19 +142,54 @@ namespace HashTableHBA
             return false;
         }
 
-        //public bool rehash()
-        //{
-        //    // New list with double the size of the original
-        //    Capacity *=  2;
+        public bool rehash()
+        {
+            if(KeyValuePair == null)
+            {
+                return false;
+            }
 
-        //    var newList = new LinkedList<Bucket<Key, Value>>[Capacity];
-           
-        //    KeyValuePair.CopyTo(newList, 0);
+            // New list with double the size of the original
+            Capacity *= 2;
 
-        //    KeyValuePair = newList;
+            Bucket<Key, Value>[] ResizedList = new Bucket<Key, Value>[Capacity];
 
-        //    return true;        
-        //}
+            //for (int i = 0; i < KeyValuePair.Length; i++)
+            //{
+            //    Bucket<Key, Value> pairs = KeyValuePair[i];
 
+            //    while (pairs != null)
+            //    {
+            //        Key key = pairs.key;
+            //        Value value = pairs.value;
+
+            //        Bucket<Key, Value> bucket = new Bucket<Key, Value>(key, value);
+
+            //        int bucketIndex = CarterHashFunction(key);
+
+            //        bucket.nextBucket = ResizedList[bucketIndex];
+            //        ResizedList[bucketIndex] = bucket;
+            //    }
+            //}
+            //KeyValuePair = ResizedList;
+
+
+            for (int i = 0; i < KeyValuePair.Length; i++)
+            {
+                Bucket<Key, Value> entry = KeyValuePair[i];
+
+                while (entry != null)
+                {
+                    Bucket<Key, Value> next = entry.nextBucket;
+                    int index = CarterHashFunction(entry.key);
+                    entry.nextBucket = ResizedList[index];
+                    ResizedList[index] = entry;
+                    entry = next;
+                }
+            }
+            KeyValuePair = ResizedList;
+
+            return true;
+        }
     }
 }
