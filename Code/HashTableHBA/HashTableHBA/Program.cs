@@ -44,10 +44,10 @@ hashTable.Update(125, "OilFilter");
 
 string partUpdated = hashTable.Search(125);
 
-hashTable.Delete(4);
-hashTable.Delete(3);
+hashTable.Delete(125);
+hashTable.Delete(326);
 hashTable.Delete(2);
 hashTable.Delete(1);
 
-string part3 = hashTable.Search(3);
+string part3 = hashTable.Search(125);
 string part4 = hashTable.Search(4);

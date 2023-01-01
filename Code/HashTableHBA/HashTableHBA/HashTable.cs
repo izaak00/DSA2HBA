@@ -11,17 +11,22 @@ namespace HashTableHBA
 {
     public class HashTable<Key, Value> : IHashTable<Key, Value>
     {
-        private LinkedList<Bucket<Key, Value>>[] KeyValuePair;
+        //private LinkedList<Bucket<Key, Value>>[] KeyValuePair;
+        private Bucket<Key, Value>[] KeyValuePair;
         private int count;
         public int Capacity { get; set; }
+
+        //Carter Wegman Hash Function
         public IHashFunctionProvider HashFunctionPovider;
         public IHashFunction HashFunction;
+
+        //Constructor
         public HashTable(int capacity, IHashFunctionProvider provider)
         {
             Capacity = capacity;
             HashFunctionPovider = provider;
             HashFunction = HashFunctionPovider.GetHashFunction(Capacity);
-            KeyValuePair = new LinkedList<Bucket<Key, Value>>[capacity];
+            KeyValuePair = new Bucket<Key, Value>[capacity];
             count = 0;
         }
         public int Count()
@@ -33,18 +38,23 @@ namespace HashTableHBA
         {
             //int bucketIndex = HashFunction.Hash(key, Capacity);
             int bucketIndex = CarterHashFunction(key);
-            LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
-            if (bucket != null)
-            {
-                foreach (Bucket<Key, Value> pair in bucket)
+            Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
+
+            while(bucket != null)
+            { 
+                if (bucket.key.Equals(key))
                 {
-                    if (pair.key.Equals(key))
-                    {
-                        bucket.Remove(pair);
-                        count--;
-                        return true;
-                    }
+                    KeyValuePair[bucketIndex] = bucket.nextBucket;
+                    count--;
+                    return true;
                 }
+                else if (bucket.nextBucket.key.Equals(key))
+                {
+                    bucket.nextBucket = bucket.nextBucket.nextBucket;
+                    count--;
+                    return true;
+                }
+                
             }
             return false;
         }
@@ -61,10 +71,10 @@ namespace HashTableHBA
 
         public bool Insert(Key key, Value value)
         {
-            if(GetLoadFactor() >= 0.9)
-            {
-                rehash();
-            }
+            //if(GetLoadFactor() >= 0.9)
+            //{
+            //    rehash();
+            //}
 
             // Do a check
             if (key == null)
@@ -74,21 +84,19 @@ namespace HashTableHBA
 
             int bucketIndex = CarterHashFunction(key);
             
-            LinkedList <Bucket<Key, Value >> bucket = KeyValuePair[bucketIndex];
+            Bucket<Key, Value > bucket = new Bucket<Key, Value>(key,value);
 
-            if (bucket == null)
+            if (KeyValuePair[bucketIndex] == null)
             {
-                bucket = new LinkedList<Bucket<Key, Value>>();
-                KeyValuePair[bucketIndex] = bucket;
+                bucket.nextBucket = KeyValuePair[bucketIndex];
+                KeyValuePair[bucketIndex] = bucket;      
             }
            
             else
             { 
                 return false;
             }
-                     
-            
-            bucket.AddLast(new Bucket<Key, Value>(key, value));
+    
             count++;
             return true;
         }
@@ -98,17 +106,17 @@ namespace HashTableHBA
             //int bucketIndex = HashFunction.Hash(key, Capacity);
             int bucketIndex = CarterHashFunction(key);
 
-            LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
-            if(bucket != null)
+            Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
+
+            while(bucket != null)
             {
-                foreach (Bucket<Key, Value> pair in bucket)
+                if(bucket.key.Equals(key))
                 {
-                    if (pair.key.Equals(key))
-                    {
-                        return pair.value;
-                    }
+                    return bucket.value;
                 }
+                bucket = bucket.nextBucket;  
             }
+    
             throw new KeyNotFoundException("Key not found: " + key.ToString());
         }
 
@@ -121,35 +129,32 @@ namespace HashTableHBA
 
             //int bucketIndex = HashFunction.Hash(key, Capacity);
             int bucketIndex = CarterHashFunction(key);
-            LinkedList<Bucket<Key, Value>> bucket = KeyValuePair[bucketIndex];
+            Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
-            if(bucket != null)
-            {
-                foreach (Bucket<Key, Value> pair in bucket)
+            while (bucket != null)
+            {          
+                if (bucket.key.Equals(key))
                 {
-                    if (pair.key.Equals(key))
-                    {
-                        pair.value = newValue;
-                        return true;
-                    }
-                }
+                    bucket.value = newValue;
+                    return true;
+                }   
             }
             return false;
         }
 
-        public bool rehash()
-        {
-            // New list with double the size of the original
-            Capacity *=  2;
+        //public bool rehash()
+        //{
+        //    // New list with double the size of the original
+        //    Capacity *=  2;
 
-            var newList = new LinkedList<Bucket<Key, Value>>[Capacity];
+        //    var newList = new LinkedList<Bucket<Key, Value>>[Capacity];
            
-            KeyValuePair.CopyTo(newList, 0);
+        //    KeyValuePair.CopyTo(newList, 0);
 
-            KeyValuePair = newList;
+        //    KeyValuePair = newList;
 
-            return true;        
-        }
+        //    return true;        
+        //}
 
     }
 }
