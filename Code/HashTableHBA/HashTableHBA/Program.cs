@@ -5,16 +5,16 @@ IHashFunctionProvider provider = new CarterWegmanHashFunctionProvider(1);
 var hashTable = new HashTable<int, string>(16, provider);
 
 
-for(int i = 0; i<900; i++)
+for(int i = 0; i<400; i++)
 {
     hashTable.Insert(i, "Turbo");
 }
 
 
-for (int i = 900; i < 1800; i++)
-{
-    hashTable.Insert(i, "Injectors");
-}
+//for (int i = 900; i < 1800; i++)
+//{
+//    hashTable.Insert(i, "Injectors");
+//}
 
 
 string part1 = hashTable.Search(125);

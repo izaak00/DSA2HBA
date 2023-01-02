@@ -80,23 +80,33 @@ namespace HashTableHBA
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
 
-            //int bucketIndex = CarterHashFunction(key);
-            
-            Bucket<Key, Value > bucket = new Bucket<Key, Value>(key,value);
+            int bucketIndex = CarterHashFunction(key);
+
+            Bucket<Key, Value > bucket = KeyValuePair[bucketIndex];
 
             if (KeyValuePair[bucketIndex] == null)
             {
-                bucket.nextBucket = KeyValuePair[bucketIndex];
-                KeyValuePair[bucketIndex] = bucket;      
+                Bucket<Key, Value> BucketChain = new Bucket<Key, Value>(key, value);
+                BucketChain.nextBucket = KeyValuePair[bucketIndex];
+                KeyValuePair[bucketIndex] = BucketChain;      
             }
            
             else
-            { 
-                return false;
+            {   
+                if (KeyValuePair[bucketIndex].key.Equals(key))
+                {
+                    return false;
+                }
+      
+                while (bucket.nextBucket != null)
+                {
+                    bucket = bucket.nextBucket;
+                }
+                
+                bucket.nextBucket = new Bucket<Key, Value>(key,value);
             }
-    
             count++;
             return true;
         }
