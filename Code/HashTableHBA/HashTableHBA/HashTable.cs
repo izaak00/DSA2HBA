@@ -147,7 +147,17 @@ namespace HashTableHBA
                 {
                     bucket.value = newValue;
                     return true;
-                }   
+                } 
+                
+               
+                bucket = bucket.nextBucket;
+
+                if(bucket.key.Equals(key))
+                {
+                    bucket.value = newValue;
+                    return true;
+                }
+               
             }
             return false;
         }
