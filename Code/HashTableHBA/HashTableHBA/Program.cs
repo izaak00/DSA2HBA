@@ -5,7 +5,7 @@ IHashFunctionProvider provider = new CarterWegmanHashFunctionProvider(1);
 var hashTable = new HashTable<int, string>(16, provider);
 
 
-for(int i = 0; i<30; i++)
+for(int i = 0; i<100; i++)
 {
     hashTable.Insert(i, "Turbo");
 }

@@ -172,32 +172,14 @@ namespace HashTableHBA
             // New list with double the size of the original
             Capacity *= 2;
 
+            CWHashFunction = HashFunctionPovider.GetHashFunction(Capacity);
+
             Bucket<Key, Value>[] ResizedList = new Bucket<Key, Value>[Capacity];
-
-            //for (int i = 0; i < KeyValuePair.Length; i++)
-            //{
-            //    Bucket<Key, Value> pairs = KeyValuePair[i];
-
-            //    while (pairs != null)
-            //    {
-            //        Key key = pairs.key;
-            //        Value value = pairs.value;
-
-            //        Bucket<Key, Value> bucket = new Bucket<Key, Value>(key, value);
-
-            //        int bucketIndex = CarterHashFunction(key);
-
-            //        bucket.nextBucket = ResizedList[bucketIndex];
-            //        ResizedList[bucketIndex] = bucket;
-            //    }
-            //}
-            //KeyValuePair = ResizedList;
-
 
             for (int i = 0; i < KeyValuePair.Length; i++)
             {
                 Bucket<Key, Value> entry = KeyValuePair[i];
-
+                
                 while (entry != null)
                 {
                     Bucket<Key, Value> next = entry.nextBucket;
