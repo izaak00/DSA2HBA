@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashTableHBA", "HashTableHBA\HashTableHBA.csproj", "{7EB0B798-1D09-4B49-8764-CAE6CDDCDC8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashTableHBA", "HashTableHBA\HashTableHBA.csproj", "{7EB0B798-1D09-4B49-8764-CAE6CDDCDC8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHashTableFunctions", "TestHashTableFunctions\TestHashTableFunctions.csproj", "{310EE55B-EA19-4DED-8C2F-41551E1A0CE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7EB0B798-1D09-4B49-8764-CAE6CDDCDC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EB0B798-1D09-4B49-8764-CAE6CDDCDC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EB0B798-1D09-4B49-8764-CAE6CDDCDC8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{310EE55B-EA19-4DED-8C2F-41551E1A0CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{310EE55B-EA19-4DED-8C2F-41551E1A0CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{310EE55B-EA19-4DED-8C2F-41551E1A0CE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{310EE55B-EA19-4DED-8C2F-41551E1A0CE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

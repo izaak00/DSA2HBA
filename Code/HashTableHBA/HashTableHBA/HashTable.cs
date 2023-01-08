@@ -42,19 +42,28 @@ namespace HashTableHBA
 
             while(bucket != null)
             { 
+
                 if (bucket.key.Equals(key))
                 {
-                    KeyValuePair[bucketIndex] = bucket.nextBucket;
+                    //KeyValuePair[bucketIndex] = bucket.nextBucket;
+                    bucket.nextBucket = bucket.nextBucket.nextBucket;
                     count--;
                     return true;
                 }
+
+                else if (bucket.nextBucket == null)
+                {
+                    return false;
+                }
+
                 else if (bucket.nextBucket.key.Equals(key))
                 {
                     bucket.nextBucket = bucket.nextBucket.nextBucket;
                     count--;
                     return true;
                 }
-                
+
+                bucket = bucket.nextBucket;                  
             }
             return false;
         }
