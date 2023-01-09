@@ -29,6 +29,14 @@ namespace HashTableHBA
             KeyValuePair = new Bucket<Key, Value>[capacity];
             count = 0;
         }
+
+        public HashTable(int capacity)
+        {
+            Capacity = capacity;
+            KeyValuePair = new Bucket<Key, Value>[capacity];
+            count = 0;
+        }
+
         public int Count()
         {
             return count;
@@ -36,8 +44,8 @@ namespace HashTableHBA
 
         public bool Delete(Key key)
         {
-            //int bucketIndex = HashFunction.Hash(key, Capacity);
-            int bucketIndex = CarterHashFunction(key);
+            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = CarterHashFunction(key);
             Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
             while(bucket != null)
@@ -46,7 +54,8 @@ namespace HashTableHBA
                 if (bucket.key.Equals(key))
                 {
                     //KeyValuePair[bucketIndex] = bucket.nextBucket;
-                    bucket.nextBucket = bucket.nextBucket.nextBucket;
+                    //bucket.nextBucket = bucket.nextBucket.nextBucket;
+                    bucket = bucket.nextBucket;
                     count--;
                     return true;
                 }
@@ -89,9 +98,9 @@ namespace HashTableHBA
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = HashFunction.Hash(key, Capacity);
 
-            int bucketIndex = CarterHashFunction(key);
+            //int bucketIndex = CarterHashFunction(key);
 
             Bucket<Key, Value > bucket = KeyValuePair[bucketIndex];
 
@@ -122,8 +131,8 @@ namespace HashTableHBA
 
         public Value Search(Key key)
         {
-            //int bucketIndex = HashFunction.Hash(key, Capacity);
-            int bucketIndex = CarterHashFunction(key);
+            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = CarterHashFunction(key);
 
             Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
@@ -146,8 +155,8 @@ namespace HashTableHBA
                 return false;
             }
 
-            //int bucketIndex = HashFunction.Hash(key, Capacity);
-            int bucketIndex = CarterHashFunction(key);
+            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = CarterHashFunction(key);
             Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
             while (bucket != null)
