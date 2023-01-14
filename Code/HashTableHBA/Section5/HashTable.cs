@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace HashTableHBA
 {
     public class HashTable<Key, Value> : IHashTable<Key, Value>
     {
         //private LinkedList<Bucket<Key, Value>>[] KeyValuePair;
-        private Bucket<Key, Value>[] KeyValuePair;
-        private int count;
+        private Bucket<int, string>[] KeyValuePair;
+        volatile private int count;
         public int Capacity { get; set; }
 
         //Carter Wegman Hash Function
@@ -26,14 +28,14 @@ namespace HashTableHBA
             Capacity = capacity;
             HashFunctionPovider = provider;
             CWHashFunction = HashFunctionPovider.GetHashFunction(Capacity);
-            KeyValuePair = new Bucket<Key, Value>[capacity];
+            KeyValuePair = new Bucket<int, string>[capacity];
             count = 0;
         }
 
         public HashTable(int capacity)
         {
             Capacity = capacity;
-            KeyValuePair = new Bucket<Key, Value>[capacity];
+            KeyValuePair = new Bucket<int, string>[capacity];
             count = 0;
         }
 
@@ -42,11 +44,27 @@ namespace HashTableHBA
             return count;
         }
 
-        public bool Delete(Key key)
+        public bool ContainsKey(int key)
+        {
+            int index = key % KeyValuePair.Length;
+            Bucket<int,string> current = KeyValuePair[index];
+
+            while (current != null)
+            {
+                if (current.key == key)
+                {
+                    return true;
+                }
+                current = current.nextBucket;
+            }
+            return false;
+        }
+
+        public bool Delete(int key)
         {
             int bucketIndex = HashFunction.Hash(key, Capacity);
             //int bucketIndex = CarterHashFunction(key);
-            Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
+            Bucket<int, string> bucket = KeyValuePair[bucketIndex];
 
             while(bucket != null)
             { 
@@ -56,7 +74,7 @@ namespace HashTableHBA
                     //KeyValuePair[bucketIndex] = bucket.nextBucket;
                     //bucket.nextBucket = bucket.nextBucket.nextBucket;
                     bucket = bucket.nextBucket;
-                    count--;
+                    Interlocked.Decrement(ref(count));
                     return true;
                 }
 
@@ -68,7 +86,7 @@ namespace HashTableHBA
                 else if (bucket.nextBucket.key.Equals(key))
                 {
                     bucket.nextBucket = bucket.nextBucket.nextBucket;
-                    count--;
+                    Interlocked.Decrement(ref (count));
                     return true;
                 }
 
@@ -82,12 +100,12 @@ namespace HashTableHBA
            return (double)count / Capacity;
         }
 
-        public int CarterHashFunction(Key key)
+        public int CarterHashFunction(int key)
         {    
             return CWHashFunction.Hash(key);      
         }
 
-        public bool Insert(Key key, Value value)
+        public bool InsertFirst(int key, string value)
         {
             if (GetLoadFactor() >= 0.9)
             {
@@ -98,49 +116,63 @@ namespace HashTableHBA
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
 
-            //int bucketIndex = CarterHashFunction(key);
+            int bucketIndex = CarterHashFunction(key);
 
-            Bucket<Key, Value > bucket = KeyValuePair[bucketIndex];
+            Bucket<int, string > head = KeyValuePair[bucketIndex];
 
-            if (KeyValuePair[bucketIndex] == null)
+            Bucket<int, string> newBucket = new Bucket<int,string>(key,value);
+            newBucket.nextBucket = head;
+
+            if (ContainsKey(key))
             {
-                Bucket<Key, Value> BucketChain = new Bucket<Key, Value>(key, value);
-                BucketChain.nextBucket = KeyValuePair[bucketIndex];
-                KeyValuePair[bucketIndex] = BucketChain;      
+                return false;
             }
+
+            if (Interlocked.CompareExchange(ref KeyValuePair[bucketIndex], newBucket, head) != head)
+            {
+                return false;
+            }
+
+
+            //if (KeyValuePair[bucketIndex] == null)
+            //{
+            //    Bucket<int, string> BucketChain = new Bucket<int, string>(key, value);
+            //    BucketChain.nextBucket = KeyValuePair[bucketIndex];
+            //    KeyValuePair[bucketIndex] = BucketChain;      
+            //}
            
-            else
-            {   
-                if (KeyValuePair[bucketIndex].key.Equals(key))
-                {
-                    return false;
-                }
+            //else
+            //{   
+            //    if (KeyValuePair[bucketIndex].key.Equals(key))
+            //    {
+            //        return false;
+            //    }
       
-                while (bucket.nextBucket != null)
-                {
-                    bucket = bucket.nextBucket;
-                }
+            //    while (bucket.nextBucket != null)
+            //    {
+            //        bucket = bucket.nextBucket;
+            //    }
                 
-                bucket.nextBucket = new Bucket<Key, Value>(key,value);
-            }
-            count++;
+            //    bucket.nextBucket = new Bucket<int, string>(key,value);
+            //}
+            Interlocked.Increment(ref (count));
             return true;
         }
 
-        public Value Search(Key key)
+        public string Search(int key)
         {
-            int bucketIndex = HashFunction.Hash(key, Capacity);
-            //int bucketIndex = CarterHashFunction(key);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
 
-            Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
+            Bucket<int, string> bucket = KeyValuePair[bucketIndex];
 
             while(bucket != null)
             {
                 if(bucket.key.Equals(key))
                 {
-                    return bucket.value;
+                    return bucket.value.ToString();
                 }
                 bucket = bucket.nextBucket;  
             }
@@ -148,19 +180,26 @@ namespace HashTableHBA
             throw new KeyNotFoundException("Key not found: " + key.ToString());
         }
 
-        public bool Update(Key key, Value newValue)
+        public bool Update(int key, string newValue)
         {
             if(key == null)
             {
                 return false;
             }
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
-            //int bucketIndex = CarterHashFunction(key);
-            Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
+            if(!ContainsKey(key))
+            {
+                return false;
+            }
+
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
+            Bucket<int, string> bucket = KeyValuePair[bucketIndex];
 
             while (bucket != null)
-            {          
+            {
+                string originalValue = bucket.value;
+
                 if (bucket.key.Equals(key))
                 {
                     bucket.value = newValue;
@@ -168,7 +207,15 @@ namespace HashTableHBA
                 } 
                 
                
-                bucket = bucket.nextBucket;    
+                bucket = bucket.nextBucket;
+
+                if (Interlocked.CompareExchange(ref bucket.value, newValue, originalValue) != originalValue)
+                {
+                    Console.WriteLine("Update failed due to concurrent modification.");
+                }
+
+                break;
+
             }
             return false;
         }
@@ -185,15 +232,15 @@ namespace HashTableHBA
 
             CWHashFunction = HashFunctionPovider.GetHashFunction(Capacity);
 
-            Bucket<Key, Value>[] ResizedList = new Bucket<Key, Value>[Capacity];
+            Bucket<int, string>[] ResizedList = new Bucket<int, string>[Capacity];
 
             for (int i = 0; i < KeyValuePair.Length; i++)
             {
-                Bucket<Key, Value> entry = KeyValuePair[i];
+                Bucket<int, string> entry = KeyValuePair[i];
                 
                 while (entry != null)
                 {
-                    Bucket<Key, Value> next = entry.nextBucket;
+                    Bucket<int, string> next = entry.nextBucket;
                     int index = CarterHashFunction(entry.key);
                     entry.nextBucket = ResizedList[index];
                     ResizedList[index] = entry;

@@ -1,0 +1,5 @@
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.csproj.AssemblyReference.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.GeneratedMSBuildEditorConfig.editorconfig
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.AssemblyInfoInputs.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.AssemblyInfo.cs
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.csproj.CoreCompileInputs.cache
