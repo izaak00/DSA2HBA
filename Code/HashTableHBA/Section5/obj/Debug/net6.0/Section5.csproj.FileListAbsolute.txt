@@ -3,3 +3,13 @@ D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Secti
 D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.AssemblyInfoInputs.cache
 D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.AssemblyInfo.cs
 D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.csproj.CoreCompileInputs.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\bin\Debug\net6.0\Section5.exe
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\bin\Debug\net6.0\Section5.deps.json
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\bin\Debug\net6.0\Section5.runtimeconfig.json
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\bin\Debug\net6.0\Section5.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\bin\Debug\net6.0\Section5.pdb
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\refint\Section5.dll
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.pdb
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\Section5.genruntimeconfig.cache
+D:\School\Repositories\DSA2HBA\Code\HashTableHBA\Section5\obj\Debug\net6.0\ref\Section5.dll

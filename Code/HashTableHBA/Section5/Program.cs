@@ -1,12 +1,12 @@
 ﻿using HashTableHBA;
 
 IHashFunctionProvider provider = new CarterWegmanHashFunctionProvider(1);
-var hashTable = new HashTable<int, string>(16, provider);
+var hashTable = new HashTableTwo<int, string>(16, provider);
 
 
 for (int i = 0; i <= 100; i++)
 {
-    hashTable.Insert(i, "Turbo");
+    hashTable.InsertFirst(i, "Turbo");
 }
 
 
@@ -16,7 +16,7 @@ for (int i = 0; i <= 100; i++)
 //}
 
 
-string part1 = hashTable.Search(25);
+string part1 = hashTable.Search(1);
 //string part2 = hashTable.Search(44);
 
 hashTable.Update(12, "OilFilter");
@@ -28,5 +28,5 @@ hashTable.Delete(6);
 hashTable.Delete(70);
 hashTable.Delete(8);
 
-string part3 = hashTable.Search(10);
+string part3 = hashTable.Search(70);
 string part4 = hashTable.Search(13);

@@ -12,7 +12,7 @@ namespace HashTableHBA
         public Key key;
         public Value value;
 
-        public Bucket<Key, Value> nextBucket { get; set; }
+        public Bucket<Key, Value> nextBucket;
         
 
         public Bucket(Key _key, Value _value)

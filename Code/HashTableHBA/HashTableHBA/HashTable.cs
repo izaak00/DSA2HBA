@@ -44,8 +44,8 @@ namespace HashTableHBA
 
         public bool Delete(Key key)
         {
-            int bucketIndex = HashFunction.Hash(key, Capacity);
-            //int bucketIndex = CarterHashFunction(key);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
             Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
             while(bucket != null)
@@ -98,9 +98,9 @@ namespace HashTableHBA
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
 
-            //int bucketIndex = CarterHashFunction(key);
+            int bucketIndex = CarterHashFunction(key);
 
             Bucket<Key, Value > bucket = KeyValuePair[bucketIndex];
 
@@ -131,8 +131,8 @@ namespace HashTableHBA
 
         public Value Search(Key key)
         {
-            int bucketIndex = HashFunction.Hash(key, Capacity);
-            //int bucketIndex = CarterHashFunction(key);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
 
             Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
@@ -155,8 +155,8 @@ namespace HashTableHBA
                 return false;
             }
 
-            int bucketIndex = HashFunction.Hash(key, Capacity);
-            //int bucketIndex = CarterHashFunction(key);
+            //int bucketIndex = HashFunction.Hash(key, Capacity);
+            int bucketIndex = CarterHashFunction(key);
             Bucket<Key, Value> bucket = KeyValuePair[bucketIndex];
 
             while (bucket != null)
